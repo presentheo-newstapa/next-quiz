@@ -11,9 +11,12 @@ export default function Quiz(props) {
 
   let currentData = dataSet[progress]
 
+  // 답변 선택하기
   function selectAnswer(index) {
     setSelection(currentData.answers[index])
   }
+
+  // 다음으로 가기 & 뒤로 가기
   function goTo(direction){
     if (direction == 'prev') {
       setSelectionList(_.dropRight(selectionList))
@@ -30,6 +33,8 @@ export default function Quiz(props) {
       }
     }
   }
+
+  // 제출하기
   function submit(){
     if (selection == null) {
       alert('한 개 이상 선택해주세요')

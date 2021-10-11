@@ -3,11 +3,11 @@ import _ from 'lodash';
 import dataSet from '../pages/api/data';
 import Button from './button';
 
-export default function Result(props) {
+export default function User(props) {
   return (
     <div>
-      
+      <h1>USER INFO</h1>
     </div>
+
   )
-  
 }
