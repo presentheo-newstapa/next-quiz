@@ -75,7 +75,7 @@ export default function Home(props) {
       </Head>
 
       <main>
-        {/* 이름 입력하는 부분 */}
+        {/* 이름 입력창 */}
         {userState == 0 && (
           <div className="container max-w-screen-md px-20 py-28 mx-auto">
             <div>
@@ -116,10 +116,10 @@ export default function Home(props) {
           </div>
 
         )}
+
+        {/* 퀴즈 시작 */}
         {userState == 1 && (
           <div className="container max-w-screen-md px-20 py-28 mx-auto">
-            
-            {/* 퀴즈 창 */}
             <div className="quiz">
               <div>
                 {/* 질문 영역 */}
@@ -144,6 +144,7 @@ export default function Home(props) {
           </div>
         )}
 
+        {/* 결과 출력 창 */}
         {userState == 2 && (
           <div className="container max-w-screen-md px-20 py-28 mx-auto">
             <div>

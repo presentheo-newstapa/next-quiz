@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.3.4",
+    "firebase": "^9.1.2",
     "lodash": "^4.17.21",
     "next": "^11.1.2",
     "react": "17.0.2",
