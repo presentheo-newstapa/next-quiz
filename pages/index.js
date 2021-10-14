@@ -3,13 +3,16 @@ import _ from 'lodash';
 import Head from 'next/head';
 import Button from '../components/button';
 import dataSet from '../pages/api/data';
+import NTdataSet from '../pages/api/ntdata';
 
 export default function Home(props) {
 
+  // 유저 상태 관리
   const [userState, setUserState] = useState(0);
   const [userName, setUserName] = useState('');
   const [userJob, setUserJob] = useState('기자');
 
+  // 퀴즈 상태 관리
   const [progress, setProgress] = useState(0);
   const [selection, setSelection] = useState(null);
   const [selectionList, setSelectionList] = useState([]);
@@ -25,7 +28,7 @@ export default function Home(props) {
     }
   }
 
-    // 답변 선택하기
+  // 답변 선택하기
   function selectAnswer(index) {
     setSelection(currentData.answers[index])
   }
@@ -148,7 +151,29 @@ export default function Home(props) {
         {userState == 2 && (
           <div className="container max-w-screen-md px-20 py-28 mx-auto">
             <div>
-              <p>당신과 닮은 기자는 김용진 대표기자 입니다</p>
+              <p>당신과 닮은 기자는...</p>
+            </div>
+            <div>
+              <ul className="grid grid-cols-4 gap-2">
+                {NTdataSet.map((e, i) => {
+                  if (e.mbti == "ISFJ") {
+                    return (
+                      <li>
+                        <div>
+                          <div className="w-24 h-24 overflow-hidden rounded-full mx-auto border">
+                            <img className="object-contain" src={'/images/'+e.id+'.jpg'}></img>
+                          </div>
+                          <h4 className="text-center">{e.name} </h4>
+
+                        </div>
+                      </li>
+                    )
+                  }
+                })}
+              </ul>
+            </div>
+            <div>
+              <p>입니다</p>
             </div>
 
           </div>
