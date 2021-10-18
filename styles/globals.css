@@ -1,13 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap'); */
+
+@font-face {
+  font-family: 'EliceDigitalBaeum_Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/EliceDigitalBaeum_Bold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Noto Sans KR', sans-serif; 
+  font-family: 'EliceDigitalBaeum_Bold';
 }
 
 a {
@@ -22,3 +30,7 @@ a {
 .selected {
   color: red;
 }
+
+/* .bg-nstp {
+  background-color: #ff733c;
+} */

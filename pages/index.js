@@ -29,7 +29,7 @@ export default function Home(props) {
 
   // 답변 선택하기
   function selectAnswer(index) {
-    setSelection(currentData.answers[index])
+    setSelection(currentData.answers[index].value)
   }
 
   // 다음으로 가기 & 뒤로 가기
@@ -64,6 +64,11 @@ export default function Home(props) {
     }
   }
 
+  function foo() {
+  }
+
+
+
   // 이펙트
   useEffect(() => {
     selectAnswer;
@@ -82,7 +87,7 @@ export default function Home(props) {
           {userState == 0 && (
             <div>
               <div>
-                <h1 className="text-2xl text-white text-center font-black md:leading-normal">재미로 하는 테스트!<br/>당신과 닮은 뉴타人은 누구?!?🤣</h1>
+                <h1 className="text-2xl text-white text-center font-bold md:leading-normal">재미로 하는 테스트!<br/>당신과 닮은 뉴타人은 누구?!?🤣</h1>
               </div>
               <div className="mt-10">
                 <label htmlFor="userName" className="sr-only">
@@ -94,7 +99,7 @@ export default function Home(props) {
                     type="text"
                     name="userName"
                     id="inputUserName"
-                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 py-7 pr-20 md:text-xl sm:text-lg border-gray-300 rounded-md"
+                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 py-4 pr-20 md:text-xl sm:text-lg border-gray-300 rounded-md"
                     placeholder="이름"
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center">
@@ -125,14 +130,14 @@ export default function Home(props) {
               <div className="quiz">
                 <div>
                   {/* 코멘트 영역 */}
-                  <div className="py-4 px-6 mb-4 rounded bg-gray-100 flex flex-row gap-3">
+                  {/* <div className="py-4 px-6 mb-4 rounded bg-gray-100 flex flex-row gap-3">
                     <div className="w-20 h-20 overflow-hidden rounded-full border">
                       <img className="object-contain" src="/images/muckracker.jpg"></img>
                     </div>
                     {progress == 0 && (
                       <p className="text-md">{`${userName} ${userJob}, 뉴스타파에 온 것을 환영해요. 첫 취재 기대하고 있겠습니다.`}</p>
                     )}
-                  </div>
+                  </div> */}
                   {/* 질문 영역 */}
                   <div>
                     <p className="text-2xl leading-normal">{currentData.question}</p>
@@ -146,9 +151,9 @@ export default function Home(props) {
                     </ul>
                   </div>
                 </div>
-                <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                <div className="mt-5 sm:mt-8 flex justify-center justify-start gap-3">
                   {progress > 0 ? <Button classList="text-indigo-700 bg-indigo-100 hover:bg-indigo-200 " onClick={(event) => goTo('prev')}>이전으로 가기</Button> : ''}
-                  {progress < dataSet.length-1 ? <Button classList="text-white bg-indigo-700 hover:bg-indigo-800 ml-2" onClick={(event) => goTo('next')}>다음으로 가기</Button> : <Button classList="text-white bg-indigo-700 hover:bg-indigo-800 ml-2" onClick={(event) => submit()}>제출하기</Button>}
+                  {progress < dataSet.length-1 ? <Button classList="text-white bg-indigo-700 hover:bg-indigo-800" onClick={(event) => goTo('next')}>다음으로 가기</Button> : <Button classList="text-white bg-indigo-700 hover:bg-indigo-800" onClick={(event) => submit()}>제출하기</Button>}
                 </div>
               </div>
 
