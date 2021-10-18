@@ -11,6 +11,7 @@ export default function Home(props) {
   const [userState, setUserState] = useState(0);
   const [userName, setUserName] = useState('뉴스타파');
   const [userJob, setUserJob] = useState('기자');
+  const [userMBTI, setUserMBTI] = useState('');
 
   // 퀴즈 상태 관리
   const [progress, setProgress] = useState(0);
@@ -18,6 +19,17 @@ export default function Home(props) {
   const [selectionList, setSelectionList] = useState([]);
 
   let currentData = dataSet[progress]
+
+  const [valueA, setValueA] = useState(0)
+  const [valueB, setValueB] = useState(0)
+  const [valueC, setValueC] = useState(0)
+  const [valueD, setValueD] = useState(0)
+
+  // let A, B, C, D;
+  // A = 0;
+  // B = 0;
+  // C = 0;
+  // D = 0;
 
   function enterUserInfo(){
     if (userName.length < 1) {
@@ -29,7 +41,7 @@ export default function Home(props) {
 
   // 답변 선택하기
   function selectAnswer(index) {
-    setSelection(currentData.answers[index].value)
+    setSelection(currentData.answers[index])
   }
 
   // 다음으로 가기 & 뒤로 가기
@@ -40,11 +52,13 @@ export default function Home(props) {
       setSelection(null)
     }
     if (direction == 'next') {
-      if (selection == null) {
+      if (!selection) {
         alert('한 개 이상 선택해주세요')
       } else {
         setSelectionList([...selectionList, selection])
         setProgress(progress==dataSet.length-1?progress:progress+1)
+        calcValue();
+        console.log(valueA, valueB, valueC, valueD);
         setSelection(null)
       }
     }
@@ -52,27 +66,51 @@ export default function Home(props) {
 
   // 제출하기
   function submit(){
-    if (selection == null) {
+
+    if (!selection) {
       alert('한 개 이상 선택해주세요')
     } else {
       const final = [...selectionList, selection]
       // ajax 통신으로 답변 제출하고 채점하기
       if (window.confirm('제출하시겠어요?')){
+        // console.log(final);
+        setUserMBTI(getMBTI());
+        console.log(getMBTI());
         setUserState(2);
-        console.log(final);
       }
     }
   }
 
-  function foo() {
+  function calcValue() {
+    if (selection.target == 'valueA') {
+      setValueA(valueA + selection.value)
+    } else if (selection.target == 'valueB') {
+      setValueB(valueB + selection.value)
+    } else if (selection.target == 'valueC') {
+      setValueC(valueC + selection.value)
+    } else if (selection.target == 'valueD') {
+      setValueD(valueD + selection.value)
+    }
   }
 
+  function getMBTI() {
+    let A2, B2, C2, D2; 
+    A2 = valueA > 0 ? 'E' : 'I';
+    B2 = valueB > 0 ? 'N' : 'S';
+    C2 = valueC > 0 ? 'F' : 'P';
+    D2 = valueD > 0 ? 'P' : 'J';
 
+    return (A2+B2+C2+D2);
+  }
 
   // 이펙트
   useEffect(() => {
     selectAnswer;
   }, [selection])
+
+  useEffect(() => {
+    submit;
+  }, [userMBTI, userState])
 
   return (
     <div>
@@ -170,7 +208,7 @@ export default function Home(props) {
                 <ul className="grid grid-cols-4 gap-2">
                   {NTdataSet.map((e, i) => {
                     // 결과가 일치하는 데이터 불러오기
-                    if (e.mbti == "ISFJ") {
+                    if (e.mbti == userMBTI+'') {
                       return (
                         <li>
                           <div>
@@ -187,7 +225,7 @@ export default function Home(props) {
                 </ul>
               </div>
               <div>
-                <p>ISFJ 유형 성격의 소유자는 조용하고 차분하며 따뜻하고 친근하다. 책임감과 인내력 또한 매우 강하다. 본인의 친한 친구나 가족에게 애정이 가득하다. 이들은 언제나 진솔하려 노력하고 가볍지 않기 때문에 관계를 맺기에 가장 믿음직스러운 유형이다.<br/>사회생활 시 외부 환경에 대해 내향형 중에서 가장 방어력이 강하다. 감정을 파악하는 데는 능숙하지만 표현하는 데는 서툴기 때문에 관계에 있어서 걱정을 하는 경우가 많다. 실제적이고 꼼꼼하게 계획적이며 협조적으로 일을 처리한다. 완벽한 결과물을 도출하지 못할 경우 스트레스를 상당히 받으며, 이상과 달리 귀차니즘이 생겼을 시, 자신에게서도 극심한 괴리감을 느낀다.[4] 경험을 통해서 자신이 틀렸다고 인정할 때까지 꾸준히 밀고 나가는 편이다.</p>
+                <p>{userMBTI} 유형 성격의 소유자는 조용하고 차분하며 따뜻하고 친근하다. 책임감과 인내력 또한 매우 강하다. 본인의 친한 친구나 가족에게 애정이 가득하다. 이들은 언제나 진솔하려 노력하고 가볍지 않기 때문에 관계를 맺기에 가장 믿음직스러운 유형이다.<br/>사회생활 시 외부 환경에 대해 내향형 중에서 가장 방어력이 강하다. 감정을 파악하는 데는 능숙하지만 표현하는 데는 서툴기 때문에 관계에 있어서 걱정을 하는 경우가 많다. 실제적이고 꼼꼼하게 계획적이며 협조적으로 일을 처리한다. 완벽한 결과물을 도출하지 못할 경우 스트레스를 상당히 받으며, 이상과 달리 귀차니즘이 생겼을 시, 자신에게서도 극심한 괴리감을 느낀다.[4] 경험을 통해서 자신이 틀렸다고 인정할 때까지 꾸준히 밀고 나가는 편이다.</p>
 
               </div>
 
