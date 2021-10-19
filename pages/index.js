@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Button from '../components/button';
 import dataSet from '../pages/api/data';
 import NTdataSet from '../pages/api/ntdata';
+import MBTIDataSet from '../pages/api/mbtiData';
 
 export default function Home(props) {
 
@@ -19,17 +20,6 @@ export default function Home(props) {
   const [selectionList, setSelectionList] = useState([]);
 
   let currentData = dataSet[progress]
-
-  const [valueA, setValueA] = useState(0)
-  const [valueB, setValueB] = useState(0)
-  const [valueC, setValueC] = useState(0)
-  const [valueD, setValueD] = useState(0)
-
-  // let A, B, C, D;
-  // A = 0;
-  // B = 0;
-  // C = 0;
-  // D = 0;
 
   function enterUserInfo(){
     if (userName.length < 1) {
@@ -57,8 +47,6 @@ export default function Home(props) {
       } else {
         setSelectionList([...selectionList, selection])
         setProgress(progress==dataSet.length-1?progress:progress+1)
-        calcValue();
-        console.log(valueA, valueB, valueC, valueD);
         setSelection(null)
       }
     }
@@ -73,44 +61,44 @@ export default function Home(props) {
       const final = [...selectionList, selection]
       // ajax 통신으로 답변 제출하고 채점하기
       if (window.confirm('제출하시겠어요?')){
-        // console.log(final);
-        setUserMBTI(getMBTI());
-        console.log(getMBTI());
+        setUserMBTI(getMBTI(final));
+        console.log(getMBTI(final))
         setUserState(2);
       }
     }
   }
 
-  function calcValue() {
-    if (selection.target == 'valueA') {
-      setValueA(valueA + selection.value)
-    } else if (selection.target == 'valueB') {
-      setValueB(valueB + selection.value)
-    } else if (selection.target == 'valueC') {
-      setValueC(valueC + selection.value)
-    } else if (selection.target == 'valueD') {
-      setValueD(valueD + selection.value)
-    }
-  }
+  function getMBTI(list) {
+    let v1, v2, v3, v4;
+    let l1, l2, l3, l4;
 
-  function getMBTI() {
-    let A2, B2, C2, D2; 
-    A2 = valueA > 0 ? 'E' : 'I';
-    B2 = valueB > 0 ? 'N' : 'S';
-    C2 = valueC > 0 ? 'F' : 'P';
-    D2 = valueD > 0 ? 'P' : 'J';
+    v1 = 0; v2 = 0; v3 = 0; v4 = 0;
+    list.map((e, i) => {
 
-    return (A2+B2+C2+D2);
+      switch (e.target) {
+        case 'valueA': v1 = v1 + e.value 
+          break;
+        case 'valueB': v2 = v2 + e.value
+          break;
+        case 'valueC': v3 = v3 + e.value
+          break;
+        case 'valueD': v4 = v4 + e.value
+          break;
+      }
+    })
+
+    l1 = v1 > 0 ? 'E' : 'I';
+    l2 = v2 > 0 ? 'N' : 'S';
+    l3 = v3 > 0 ? 'F' : 'T';
+    l4 = v4 > 0 ? 'P' : 'J';
+
+    return (l1+l2+l3+l4);
   }
 
   // 이펙트
   useEffect(() => {
     selectAnswer;
   }, [selection])
-
-  useEffect(() => {
-    submit;
-  }, [userMBTI, userState])
 
   return (
     <div>
@@ -138,9 +126,9 @@ export default function Home(props) {
                     name="userName"
                     id="inputUserName"
                     className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 py-4 pr-20 md:text-xl sm:text-lg border-gray-300 rounded-md"
-                    placeholder="이름"
+                    placeholder="이름을 입력해주세요!"
                   />
-                  <div className="absolute inset-y-0 right-0 flex items-center">
+                  {/* <div className="absolute inset-y-0 right-0 flex items-center">
                     <label htmlFor="userJob" className="sr-only">
                       직책
                     </label>
@@ -153,11 +141,11 @@ export default function Home(props) {
                       <option value="기자">기자</option>
                       <option value="PD">PD</option>
                     </select>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="mt-4">
-                <Button onClick={() => enterUserInfo()} classList="text-indigo-700 bg-indigo-100 hover:bg-indigo-200">시작하기!</Button>
+                <Button onClick={() => enterUserInfo()} classList="text-indigo-700 bg-indigo-100 hover:bg-indigo-200">시작하기</Button>
               </div>
             </div>
           )}
@@ -178,20 +166,20 @@ export default function Home(props) {
                   </div> */}
                   {/* 질문 영역 */}
                   <div>
-                    <p className="text-2xl leading-normal">{currentData.question}</p>
+                    <p className="text-xl text-white leading-normal">{currentData.question}</p>
                   </div>
                   {/* 답변 리스트 영역 */}
                   <div>
                     <ul>
                       {currentData.answers.map((e, i) => {
-                        return <li className={`mt-4 px-6 py-4 border rounded cursor-pointer ${selection==e?'bg-indigo-100 shadow-inner':''}`} onClick={(event) => selectAnswer(i)} key={i}>{e.content}</li>
+                        return <li className={`mt-4 px-6 py-4 border rounded cursor-pointer bg-white ${selection==e?'border border-gray-500 bg-gray-300':''}`} onClick={(event) => selectAnswer(i)} key={i}>{e.content}</li>
                       })}
                     </ul>
                   </div>
                 </div>
-                <div className="mt-5 sm:mt-8 flex justify-center justify-start gap-3">
+                <div className="mt-5 sm:mt-8 flex justify-center gap-3">
                   {progress > 0 ? <Button classList="text-indigo-700 bg-indigo-100 hover:bg-indigo-200 " onClick={(event) => goTo('prev')}>이전으로 가기</Button> : ''}
-                  {progress < dataSet.length-1 ? <Button classList="text-white bg-indigo-700 hover:bg-indigo-800" onClick={(event) => goTo('next')}>다음으로 가기</Button> : <Button classList="text-white bg-indigo-700 hover:bg-indigo-800" onClick={(event) => submit()}>제출하기</Button>}
+                  {progress < dataSet.length-1 ? <Button classList="text-white bg-indigo-800 hover:bg-indigo-900" onClick={(event) => goTo('next')}>다음으로 가기</Button> : <Button classList="text-white bg-indigo-800 hover:bg-indigo-900" onClick={(event) => submit()}>제출하기</Button>}
                 </div>
               </div>
 
@@ -202,21 +190,21 @@ export default function Home(props) {
           {userState == 2 && (
             <div>
               <div>
-                <h2 className="md:text-4xl font-black text-center">당신과 닮은 뉴타人은...</h2>
+                <h2 className="text-2xl font-bold text-center text-white">{userName} 님과 닮은 뉴타人은...</h2>
               </div>
+              {/* 뉴타인 리스트 띄우는 곳 */}
               <div className="mt-10">
-                <ul className="grid grid-cols-4 gap-2">
+                <ul className="grid grid-cols-3 gap-2">
                   {NTdataSet.map((e, i) => {
                     // 결과가 일치하는 데이터 불러오기
-                    if (e.mbti == userMBTI+'') {
+                    if (e.mbti == userMBTI) {
                       return (
-                        <li>
+                        <li key={i}>
                           <div>
                             <div className="w-24 h-24 overflow-hidden rounded-full mx-auto border">
                               <img className="object-contain" src={'/images/'+e.id+'.jpg'}></img>
                             </div>
-                            <h4 className="text-center">{e.name} </h4>
-
+                            <h4 className="mt-1 text-center text-bold text-white">{e.name} </h4>
                           </div>
                         </li>
                       )
@@ -224,11 +212,16 @@ export default function Home(props) {
                   })}
                 </ul>
               </div>
-              <div>
-                <p>{userMBTI} 유형 성격의 소유자는 조용하고 차분하며 따뜻하고 친근하다. 책임감과 인내력 또한 매우 강하다. 본인의 친한 친구나 가족에게 애정이 가득하다. 이들은 언제나 진솔하려 노력하고 가볍지 않기 때문에 관계를 맺기에 가장 믿음직스러운 유형이다.<br/>사회생활 시 외부 환경에 대해 내향형 중에서 가장 방어력이 강하다. 감정을 파악하는 데는 능숙하지만 표현하는 데는 서툴기 때문에 관계에 있어서 걱정을 하는 경우가 많다. 실제적이고 꼼꼼하게 계획적이며 협조적으로 일을 처리한다. 완벽한 결과물을 도출하지 못할 경우 스트레스를 상당히 받으며, 이상과 달리 귀차니즘이 생겼을 시, 자신에게서도 극심한 괴리감을 느낀다.[4] 경험을 통해서 자신이 틀렸다고 인정할 때까지 꾸준히 밀고 나가는 편이다.</p>
-
+              {/* 유형 설명 들어가는 곳 */}
+              <div className="mt-6">
+                {MBTIDataSet.map((e, i) => {
+                  if (userMBTI == e.title) {
+                    return(
+                      <p className="text-md text-white" key={i}>{e.desc}</p>
+                    )
+                  }
+                })}
               </div>
-
             </div>
           )}
         </div>
