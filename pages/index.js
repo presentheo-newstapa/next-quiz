@@ -84,6 +84,8 @@ export default function Home(props) {
           break;
         case 'valueD': v4 = v4 + e.value
           break;
+        default:
+          break;
       }
     })
 
@@ -194,12 +196,12 @@ export default function Home(props) {
               </div>
               {/* 뉴타인 리스트 띄우는 곳 */}
               <div className="mt-10">
-                <ul className="grid grid-cols-3 gap-2">
+                <ul className="flex flex-wrap gap-2">
                   {NTdataSet.map((e, i) => {
                     // 결과가 일치하는 데이터 불러오기
                     if (e.mbti == userMBTI) {
                       return (
-                        <li key={i}>
+                        <li className="flex-auto" key={i}>
                           <div>
                             <div className="w-24 h-24 overflow-hidden rounded-full mx-auto border">
                               <img className="object-contain" src={'/images/'+e.id+'.jpg'}></img>
