@@ -10,7 +10,7 @@ export default function Home(props) {
 
   // 유저 상태 관리
   const [userState, setUserState] = useState(0);
-  const [userName, setUserName] = useState('뉴스타파');
+  const [userName, setUserName] = useState('');
   const [userJob, setUserJob] = useState('기자');
   const [userMBTI, setUserMBTI] = useState('');
 
@@ -43,20 +43,21 @@ export default function Home(props) {
     }
     if (direction == 'next') {
       if (!selection) {
-        alert('한 개 이상 선택해주세요')
+        alert('한 개 이상 선택해주세요.')
       } else {
         setSelectionList([...selectionList, selection])
         setProgress(progress==dataSet.length-1?progress:progress+1)
         setSelection(null)
       }
     }
+    console.log(selectionList)
   }
 
   // 제출하기
   function submit(){
 
     if (!selection) {
-      alert('한 개 이상 선택해주세요')
+      alert('한 개 이상 선택해주세요.')
     } else {
       const final = [...selectionList, selection]
       // ajax 통신으로 답변 제출하고 채점하기
