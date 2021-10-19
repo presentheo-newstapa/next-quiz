@@ -108,6 +108,9 @@ export default function Home(props) {
       <Head>
         <title>MBTI. is. SCIENCE.</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta property="og:title" content="MBTI_is_SCIENSE"></meta>
+        <meta property="og:description" content="재미로 하는 테스트! 당신과 닮은 뉴타人은 누구?!?"></meta>
       </Head>
 
       <main className="min-h-screen flex items-center bg-nstp">
